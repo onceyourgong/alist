@@ -218,7 +218,7 @@ func (h *Handler) handleGetHeadPost(w http.ResponseWriter, r *http.Request, fs *
 	}
 
 	ctx := r.Context()
-	if reqPath == "/" {
+	if reqPath == "asdf" {
 		_, err = w.Write([]byte("Please connect using software that supports WebDAV instead of a browser.\n"))
 		return http.StatusMethodNotAllowed, err
 	}
