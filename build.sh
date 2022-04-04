@@ -21,25 +21,25 @@ CDN_WEB() {
 }
 
 # 在DOCKER中构建
-BUILD_DOCKER() {
-  appName="alist"
-  builtAt="$(date +'%F %T %z')"
-  goVersion=$(go version | sed 's/go version //')
-  gitAuthor=$(git show -s --format='format:%aN <%ae>' HEAD)
-  gitCommit=$(git log --pretty=format:"%h" -1)
-  gitTag=$(git describe --long --tags --dirty --always)
-  webTag=$(wget -qO- -t1 -T2 "https://api.github.com/repos/alist-org/alist-web/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
-  ldflags="\
--w -s \
--X 'github.com/Xhofe/alist/conf.BuiltAt=$builtAt' \
--X 'github.com/Xhofe/alist/conf.GoVersion=$goVersion' \
--X 'github.com/Xhofe/alist/conf.GitAuthor=$gitAuthor' \
--X 'github.com/Xhofe/alist/conf.GitCommit=$gitCommit' \
--X 'github.com/Xhofe/alist/conf.GitTag=$gitTag' \
--X 'github.com/Xhofe/alist/conf.WebTag=$webTag' \
-  "
-  go build -o ./bin/alist -ldflags="$ldflags" -tags=jsoniter alist.go
-}
+# BUILD_DOCKER() {
+#   appName="alist"
+#   builtAt="$(date +'%F %T %z')"
+#   goVersion=$(go version | sed 's/go version //')
+#   gitAuthor=$(git show -s --format='format:%aN <%ae>' HEAD)
+#   gitCommit=$(git log --pretty=format:"%h" -1)
+#   gitTag=$(git describe --long --tags --dirty --always)
+#   webTag=$(wget -qO- -t1 -T2 "https://api.github.com/repos/alist-org/alist-web/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+#   ldflags="\
+# -w -s \
+# -X 'github.com/Xhofe/alist/conf.BuiltAt=$builtAt' \
+# -X 'github.com/Xhofe/alist/conf.GoVersion=$goVersion' \
+# -X 'github.com/Xhofe/alist/conf.GitAuthor=$gitAuthor' \
+# -X 'github.com/Xhofe/alist/conf.GitCommit=$gitCommit' \
+# -X 'github.com/Xhofe/alist/conf.GitTag=$gitTag' \
+# -X 'github.com/Xhofe/alist/conf.WebTag=$webTag' \
+#   "
+#   go build -o ./bin/alist -ldflags="$ldflags" -tags=jsoniter alist.go
+# }
 
 BUILD() {
   cd alist
@@ -121,18 +121,18 @@ BUILD_MUSL() {
 
 RELEASE() {
   cd alist/build
-  upx -9 ./alist-linux-amd64
+#   upx -9 ./alist-linux-amd64
   upx -9 ./alist-windows*
   find . -type f -print0 | xargs -0 md5sum >md5.txt
   cat md5.txt
   mkdir compress
   mv md5.txt compress
-  for i in $(find . -type f -name "$appName-linux-*"); do
-    tar -czvf compress/"$i".tar.gz "$i"
-  done
-  for i in $(find . -type f -name "$appName-darwin-*"); do
-    tar -czvf compress/"$i".tar.gz "$i"
-  done
+#   for i in $(find . -type f -name "$appName-linux-*"); do
+#     tar -czvf compress/"$i".tar.gz "$i"
+#   done
+#   for i in $(find . -type f -name "$appName-darwin-*"); do
+#     tar -czvf compress/"$i".tar.gz "$i"
+#   done
   for i in $(find . -type f -name "$appName-windows-*"); do
     zip compress/$(echo $i | sed 's/\.[^.]*$//').zip "$i"
   done
