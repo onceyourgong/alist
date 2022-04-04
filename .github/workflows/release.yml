@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: v2.2.1
+          ref: v2
           path: alist
           persist-credentials: false
           fetch-depth: 0
