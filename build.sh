@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 构建前端,在当前目录产生一个dist文件夹
+##  构建前端,在当前目录产生一个dist文件夹
 BUILD_WEB() {
   git clone https://github.com/onceyourgong/alist-web.git
   cd alist-web
