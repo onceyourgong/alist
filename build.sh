@@ -120,17 +120,17 @@ BUILD_MUSL() {
 
 RELEASE() {
   cd alist/build
-#   upx -9 ./alist-linux-amd64
+   upx -9 ./alist-linux-amd64
   upx -9 ./alist-windows*
   find . -type f -print0 | xargs -0 md5sum >md5.txt
   cat md5.txt
   mkdir compress
   mv md5.txt compress
-#   for i in $(find . -type f -name "$appName-linux-*"); do
-#     tar -czvf compress/"$i".tar.gz "$i"
-#   done
-#   for i in $(find . -type f -name "$appName-darwin-*"); do
-#     tar -czvf compress/"$i".tar.gz "$i"
+   for i in $(find . -type f -name "$appName-linux-*"); do
+    tar -czvf compress/"$i".tar.gz "$i"
+   done
+   for i in $(find . -type f -name "$appName-darwin-*"); do
+     tar -czvf compress/"$i".tar.gz "$i"
   done
   for i in $(find . -type f -name "$appName-windows-*"); do
     zip compress/$(echo $i | sed 's/\.[^.]*$//').zip "$i"
@@ -146,7 +146,7 @@ elif [ "$1" = "build" ]; then
   BUILD build
 elif [ "$1" = "release" ]; then
   BUILD release
-#   BUILD_MUSL
+  BUILD_MUSL
   RELEASE
 else
   echo -e "${RED_COLOR} Parameter error ${RES}"
