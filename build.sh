@@ -64,13 +64,12 @@ BUILD() {
   if [ "$1" == "release" ]; then
     xgo -out "$appName" -ldflags="$ldflags" -tags=jsoniter .
   else
-    xgo -targets=linux/amd64,windows/amd64,darwin/amd64 -out "$appName" -ldflags="$ldflags" -tags=jsoniter .
+    xgo -targets=windows/amd64 -out "$appName" -ldflags="$ldflags" -tags=jsoniter .
   fi
   mkdir -p "build"
   mv alist-* build
   if [ "$1" != "release" ]; then
       cd build
-      upx -9 ./alist-linux*
       upx -9 ./alist-windows*
       find . -type f -print0 | xargs -0 md5sum >md5.txt
       cat md5.txt
@@ -132,7 +131,7 @@ RELEASE() {
 #   done
 #   for i in $(find . -type f -name "$appName-darwin-*"); do
 #     tar -czvf compress/"$i".tar.gz "$i"
-#   done
+  done
   for i in $(find . -type f -name "$appName-windows-*"); do
     zip compress/$(echo $i | sed 's/\.[^.]*$//').zip "$i"
   done
@@ -143,13 +142,11 @@ if [ "$1" = "web" ]; then
   BUILD_WEB
 elif [ "$1" = "cdn" ]; then
   CDN_WEB
-elif [ "$1" = "docker" ]; then
-  BUILD_DOCKER
 elif [ "$1" = "build" ]; then
   BUILD build
 elif [ "$1" = "release" ]; then
   BUILD release
-  BUILD_MUSL
+#   BUILD_MUSL
   RELEASE
 else
   echo -e "${RED_COLOR} Parameter error ${RES}"
